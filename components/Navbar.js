@@ -4,6 +4,8 @@ import Link from "next/link";
 
 const Container = styled.div`
   position: fixed;
+  top: 0;
+  left: 0;
   height: 60px;
   width: 100%;
   background-color: var(--accent-color);
