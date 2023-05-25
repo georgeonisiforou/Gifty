@@ -11,6 +11,7 @@ const nextConfig = {
       "lp.arket.com",
       "asset.uniqlo.com",
       "ouraring.com",
+      "media.dertouristik.com",
     ],
   },
 };

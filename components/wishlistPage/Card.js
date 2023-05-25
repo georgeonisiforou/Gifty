@@ -106,7 +106,6 @@ const Card = ({
           onClick={handleDelete}
           as={motion.button}
           whileTap={{ scale: 0.9 }}
-          whileHover={{ scale: 1.1, transition: 0.3 }}
         >
           <DeleteIcon />
         </DeleteBtn>

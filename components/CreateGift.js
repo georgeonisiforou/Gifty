@@ -95,12 +95,14 @@ const SaveBtn = styled.button`
 
 const CreateGift = () => {
   const [gift, setGift] = useState({
-    url: "",
     title: "",
     price: "",
-    imgUrl: "",
     seller: "",
+    imgUrl: "",
+    url: "",
   });
+
+  const [prevent, setPrevent] = useState(true);
 
   const handleSave = async () => {
     await axios
@@ -108,7 +110,6 @@ const CreateGift = () => {
       .then((res) => res.data);
   };
 
-  console.log(gift);
   return (
     <>
       <Container>
@@ -174,7 +175,22 @@ const CreateGift = () => {
             </InputContainer>
           </InputAndTitle>
 
-          <SaveBtn onClick={handleSave}>SAVE</SaveBtn>
+          <SaveBtn
+            onClick={() => {
+              Object.values(gift).map((val, _) => {
+                if (val === "") {
+                  setPrevent(true);
+                } else {
+                  setPrevent(false);
+                }
+              });
+              if (prevent === false) {
+                handleSave();
+              }
+            }}
+          >
+            SAVE
+          </SaveBtn>
         </FormContainer>
       </Container>
     </>

@@ -15,6 +15,7 @@ const Container = styled.div`
   color: var(--text-color);
   padding: 1rem 3rem;
   font-size: 1.25rem;
+  z-index: 10;
 `;
 
 const LogoContainer = styled.div`

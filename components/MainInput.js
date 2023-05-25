@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { styled } from "styled-components";
 import { RiHeartAddLine } from "react-icons/ri";
 import { useState } from "react";
@@ -103,15 +103,27 @@ const Sub = styled.h3`
   margin: 0;
 `;
 
+const ErrorMsg = styled.div`
+  color: red;
+`;
+
 const MainInput = () => {
   const [gift, setGift] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const ref = useRef();
 
   const handleSave = async () => {
-    await axios
-      .post("http://localhost:3001/wishlist", {
-        url: gift,
-      })
-      .then((res) => res.data);
+    if (gift === "") {
+      setErrorMsg("Please enter a URL");
+      ref.current.style.border = "1px solid red";
+      return;
+    } else {
+      await axios
+        .post("http://localhost:3001/wishlist", {
+          url: gift,
+        })
+        .then((res) => res.data);
+    }
   };
 
   // const getAll = async () => {
@@ -128,13 +140,19 @@ const MainInput = () => {
           <Title>Your Present wishlist!</Title>
           <Sub>No more sad birthdays*</Sub>
         </TitleSub>
-        <InputContainer>
+        <ErrorMsg>{errorMsg}</ErrorMsg>
+
+        <InputContainer ref={ref}>
           <HeartIcon />
           <MainInputContainer
             type="text"
             value={gift}
             placeholder="Enter your desired gift"
-            onChange={(e) => setGift(e.target.value)}
+            onChange={(e) => {
+              setGift(e.target.value);
+              ref.current.style.border = "unset";
+              setErrorMsg("");
+            }}
           />
         </InputContainer>
         <SaveBtn
