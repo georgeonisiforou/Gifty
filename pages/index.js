@@ -3,6 +3,15 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import MainInput from "../components/MainInput";
 import Layout from "../components/Layout";
+import CreateGift from "../components/CreateGift";
+import { styled } from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 60px);
+  padding: 0 1rem;
+`;
 
 export default function Home() {
   return (
@@ -13,7 +22,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <>
-        <MainInput />
+        <Container>
+          <MainInput />
+          <CreateGift />
+        </Container>
       </>
     </div>
   );

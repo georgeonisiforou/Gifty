@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import Link from "next/link";
 
 const Container = styled.div`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   height: 60px;
@@ -38,7 +38,9 @@ const Navbar = () => {
   return (
     <>
       <Container>
-        <LogoContainer>GIFTY</LogoContainer>
+        <LogoContainer>
+          <NavLink href="/">GIFTY</NavLink>
+        </LogoContainer>
         <NavList>
           <NavChild>
             <NavLink href="/wishlist">WISHLIST</NavLink>

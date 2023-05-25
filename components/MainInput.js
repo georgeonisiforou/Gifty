@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { RiHeartAddLine } from "react-icons/ri";
+import { useState } from "react";
+import axios from "axios";
+import { motion } from "framer-motion";
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -101,6 +104,23 @@ const Sub = styled.h3`
 `;
 
 const MainInput = () => {
+  const [gift, setGift] = useState("");
+
+  const handleSave = async () => {
+    await axios
+      .post("http://localhost:3001/wishlist", {
+        url: gift,
+      })
+      .then((res) => res.data);
+  };
+
+  // const getAll = async () => {
+  //   await axios.get("http://localhost:3001/wishlist").then((res) => {
+  //     res.data;
+  //     console.log(res);
+  //   });
+  // };
+
   return (
     <>
       <Container>
@@ -110,9 +130,23 @@ const MainInput = () => {
         </TitleSub>
         <InputContainer>
           <HeartIcon />
-          <MainInputContainer placeholder="Enter your desired gift" />
+          <MainInputContainer
+            type="text"
+            value={gift}
+            placeholder="Enter your desired gift"
+            onChange={(e) => setGift(e.target.value)}
+          />
         </InputContainer>
-        <SaveBtn>SAVE</SaveBtn>
+        <SaveBtn
+          as={motion.button}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => {
+            handleSave();
+            setGift("");
+          }}
+        >
+          SAVE
+        </SaveBtn>
         <Asterisk>*Or any other occasion that calls for a gift.</Asterisk>
       </Container>
     </>
