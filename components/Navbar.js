@@ -35,6 +35,8 @@ const NavChild = styled.li`
 
 const NavLink = styled(Link)``;
 
+//insert framer motion pill effect on navlist items
+
 const Navbar = () => {
   return (
     <>

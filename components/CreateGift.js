@@ -176,18 +176,19 @@ const CreateGift = () => {
           </InputAndTitle>
 
           <SaveBtn
-            onClick={() => {
-              Object.values(gift).map((val, _) => {
-                if (val === "") {
-                  setPrevent(true);
-                } else {
-                  setPrevent(false);
-                }
-              });
-              if (prevent === false) {
-                handleSave();
-              }
-            }}
+            // onClick={() => {
+            //   Object.values(gift).map((val, _) => {
+            //     if (val === "") {
+            //       setPrevent(true);
+            //     } else {
+            //       setPrevent(false);
+            //     }
+            //   });
+            //   if (prevent === false) {
+            //     handleSave();
+            //   }
+            // }}
+            onClick={handleSave}
           >
             SAVE
           </SaveBtn>
