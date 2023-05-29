@@ -105,11 +105,13 @@ const Sub = styled.h3`
 
 const ErrorMsg = styled.div`
   color: red;
+  margin-bottom: -15px;
 `;
 
 const MainInput = () => {
   const [gift, setGift] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [success, setSuccess] = useState(false);
   const ref = useRef();
 
   const handleSave = async () => {
@@ -123,15 +125,9 @@ const MainInput = () => {
           url: gift,
         })
         .then((res) => res.data);
+      setSuccess(true);
     }
   };
-
-  // const getAll = async () => {
-  //   await axios.get("http://localhost:3001/wishlist").then((res) => {
-  //     res.data;
-  //     console.log(res);
-  //   });
-  // };
 
   return (
     <>
@@ -152,6 +148,7 @@ const MainInput = () => {
               setGift(e.target.value);
               ref.current.style.border = "unset";
               setErrorMsg("");
+              setSuccess(false);
             }}
           />
         </InputContainer>
@@ -163,7 +160,7 @@ const MainInput = () => {
             setGift("");
           }}
         >
-          SAVE
+          {success ? "SAVED!" : "SAVE"}
         </SaveBtn>
         <Asterisk>*Or any other occasion that calls for a gift.</Asterisk>
       </Container>

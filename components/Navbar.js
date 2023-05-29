@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const Container = styled.div`
   position: sticky;
@@ -31,13 +32,31 @@ const NavList = styled.ul`
 
 const NavChild = styled.li`
   list-style: none;
+  position: relative;
+  padding: 8px;
 `;
 
 const NavLink = styled(Link)``;
 
+const NavActiveBg = styled.div`
+  background-color: var(--comp-color);
+  position: absolute;
+  right: 0;
+  top: 0;
+  inset: 0;
+  border-radius: 9999px;
+`;
+
 //insert framer motion pill effect on navlist items
 
 const Navbar = () => {
+  const tabs = [
+    { id: "wishlist", label: "WISHLIST", url: "/wishlist" },
+    { id: "friends", label: "FRIENDS", url: "/" },
+    { id: "explore", label: "EXPLORE", url: "/" },
+  ];
+
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
   return (
     <>
       <Container>
@@ -45,15 +64,27 @@ const Navbar = () => {
           <NavLink href="/">GIFTY</NavLink>
         </LogoContainer>
         <NavList>
-          <NavChild>
-            <NavLink href="/wishlist">WISHLIST</NavLink>
-          </NavChild>
-          <NavChild>
-            <NavLink href="/">FRIENDS</NavLink>
-          </NavChild>
-          <NavChild>
-            <NavLink href="/">EXPLORE</NavLink>
-          </NavChild>
+          {tabs.map((item, idx) => (
+            <NavChild
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+              }}
+            >
+              {activeTab === item.id && (
+                <NavActiveBg
+                  as={motion.div}
+                  layoutId="active-pill"
+                  transition={{ duration: 0.6, type: "spring" }}
+                />
+              )}
+              <NavLink href={item.url}>
+                <span style={{ position: "relative", zIndex: 10 }}>
+                  {item.label}
+                </span>
+              </NavLink>
+            </NavChild>
+          ))}
         </NavList>
       </Container>
     </>

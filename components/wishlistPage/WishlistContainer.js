@@ -7,7 +7,7 @@ import axios from "axios";
 const Container = styled.div`
   display: flex;
   gap: 24px;
-  padding: 1rem;
+  padding: 2rem;
   justify-content: flex-start;
   align-items: center;
   margin: 1rem;

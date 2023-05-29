@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import axios from "axios";
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { motion } from "framer-motion";
 
 const Container = styled.div`
   width: 100%;
@@ -11,6 +15,7 @@ const Container = styled.div`
   align-items: center;
   gap: 16px;
   color: var(--text-color);
+  background-color: var(--altbg-color);
 `;
 
 const Title = styled.h3`
@@ -83,6 +88,7 @@ const SaveBtn = styled.button`
   font-size: 1.25rem;
   font-weight: 600;
   transition: all 0.2s ease;
+  margin-top: 1rem;
   cursor: pointer;
 
   &:hover {
@@ -91,108 +97,124 @@ const SaveBtn = styled.button`
   }
 `;
 
-// url: "", title: "", price: "", imgUrl: "", seller: ""
+const ErrorMsg = styled.p`
+  color: red;
+  margin-bottom: -15px;
+  align-self: flex-end;
+  margin-right: 1rem;
+`;
+
+const SuccessMsg = styled.p`
+  font-weight: 600;
+  font-size: 1.25rem;
+`;
 
 const CreateGift = () => {
-  const [gift, setGift] = useState({
-    title: "",
-    price: "",
-    seller: "",
-    imgUrl: "",
-    url: "",
+  const validationSchema = Yup.object({
+    title: Yup.string().required("Please add a name for the product"),
+    price: Yup.number().required("Please add a price"),
+    seller: Yup.string().required("Please add a seller"),
+    imgUrl: Yup.string().required("Please add an image URL"),
+    url: Yup.string().url().required("Please add a URL for the product"),
   });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
-  const [prevent, setPrevent] = useState(true);
+  const [successMsg, setSuccessMsg] = useState("");
 
-  const handleSave = async () => {
+  const handleSave = async (data) => {
     await axios
-      .post("http://localhost:3001/wishlist/custom", gift)
+      .post("http://localhost:3001/wishlist/custom", data)
       .then((res) => res.data);
+  };
+
+  const onSubmit = (data) => {
+    handleSave(data);
+    setSuccessMsg("Gift saved!");
   };
 
   return (
     <>
       <Container>
         <Title>URL not working? Create a custom gift below!</Title>
-        <FormContainer>
-          <InputAndTitle>
-            <InputTitle>Gift Name:</InputTitle>
-            <InputContainer>
-              <MainInputContainer
-                type="text"
-                value={gift.title}
-                onChange={(e) => setGift({ ...gift, title: e.target.value })}
-                placeholder="Enter product name"
-              />
-            </InputContainer>
-          </InputAndTitle>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormContainer>
+            <ErrorMsg>{errors.title?.message}</ErrorMsg>
+            <InputAndTitle>
+              <InputTitle>Gift Name:</InputTitle>
 
-          <InputAndTitle>
-            <InputTitle>Price:</InputTitle>
-            <InputContainer>
-              <MainInputContainer
-                type="text"
-                value={gift.price}
-                onChange={(e) => setGift({ ...gift, price: e.target.value })}
-                placeholder="Enter product price"
-              />
-            </InputContainer>
-          </InputAndTitle>
+              <InputContainer>
+                <MainInputContainer
+                  type="text"
+                  // value={gift.title}
+                  // onChange={(e) => setGift({ ...gift, title: e.target.value })}
+                  placeholder="Enter product name"
+                  {...register("title")}
+                />
+              </InputContainer>
+            </InputAndTitle>
+            <ErrorMsg>{errors.price?.message}</ErrorMsg>
+            <InputAndTitle>
+              <InputTitle>Price:</InputTitle>
+              <InputContainer>
+                <MainInputContainer
+                  type="text"
+                  // value={gift.price}
+                  // onChange={(e) => setGift({ ...gift, price: e.target.value })}
+                  placeholder="Enter product price"
+                  {...register("price")}
+                />
+              </InputContainer>
+            </InputAndTitle>
+            <ErrorMsg>{errors.seller?.message}</ErrorMsg>
+            <InputAndTitle>
+              <InputTitle>Seller:</InputTitle>
+              <InputContainer>
+                <MainInputContainer
+                  type="text"
+                  // value={gift.seller}
+                  // onChange={(e) => setGift({ ...gift, seller: e.target.value })}
+                  placeholder="Enter seller's name"
+                  {...register("seller")}
+                />
+              </InputContainer>
+            </InputAndTitle>
+            <ErrorMsg>{errors.imgUrl?.message}</ErrorMsg>
+            <InputAndTitle>
+              <InputTitle>Image url:</InputTitle>
+              <InputContainer>
+                <MainInputContainer
+                  type="text"
+                  // value={gift.imgUrl}
+                  // onChange={(e) => setGift({ ...gift, imgUrl: e.target.value })}
+                  placeholder="Enter a product image url"
+                  {...register("imgUrl")}
+                />
+              </InputContainer>
+            </InputAndTitle>
+            <ErrorMsg>{errors.url?.message}</ErrorMsg>
+            <InputAndTitle>
+              <InputTitle>Url:</InputTitle>
+              <InputContainer>
+                <MainInputContainer
+                  type="text"
+                  // value={gift.url}
+                  // onChange={(e) => setGift({ ...gift, url: e.target.value })}
+                  placeholder="Enter product url"
+                  {...register("url")}
+                />
+              </InputContainer>
+            </InputAndTitle>
 
-          <InputAndTitle>
-            <InputTitle>Seller:</InputTitle>
-            <InputContainer>
-              <MainInputContainer
-                type="text"
-                value={gift.seller}
-                onChange={(e) => setGift({ ...gift, seller: e.target.value })}
-                placeholder="Enter seller's name"
-              />
-            </InputContainer>
-          </InputAndTitle>
-
-          <InputAndTitle>
-            <InputTitle>Image url:</InputTitle>
-            <InputContainer>
-              <MainInputContainer
-                type="text"
-                value={gift.imgUrl}
-                onChange={(e) => setGift({ ...gift, imgUrl: e.target.value })}
-                placeholder="Enter a product image url"
-              />
-            </InputContainer>
-          </InputAndTitle>
-
-          <InputAndTitle>
-            <InputTitle>Url:</InputTitle>
-            <InputContainer>
-              <MainInputContainer
-                type="text"
-                value={gift.url}
-                onChange={(e) => setGift({ ...gift, url: e.target.value })}
-                placeholder="Enter product url"
-              />
-            </InputContainer>
-          </InputAndTitle>
-
-          <SaveBtn
-            // onClick={() => {
-            //   Object.values(gift).map((val, _) => {
-            //     if (val === "") {
-            //       setPrevent(true);
-            //     } else {
-            //       setPrevent(false);
-            //     }
-            //   });
-            //   if (prevent === false) {
-            //     handleSave();
-            //   }
-            // }}
-            onClick={handleSave}
-          >
-            SAVE
-          </SaveBtn>
-        </FormContainer>
+            <SaveBtn as={motion.button} whileTap={{ scale: 0.9 }} type="submit">
+              SAVE
+            </SaveBtn>
+            <SuccessMsg>{successMsg}</SuccessMsg>
+          </FormContainer>
+        </form>
       </Container>
     </>
   );
