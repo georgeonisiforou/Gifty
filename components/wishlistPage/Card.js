@@ -19,6 +19,12 @@ const ImageContainer = styled.div`
   border-top-left-radius: 5px;
 `;
 
+const BothSides = styled.div`
+  width: 300px;
+  height: 450px;
+  border-radius: 5px;
+`;
+
 const Container = styled.div`
   position: relative;
   width: 300px;
@@ -26,10 +32,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  background-color: var(--comp-color);
   border-radius: 5px;
   color: var(--text-color);
   transition: all 0.3s ease-in-out;
+  background-color: var(--comp-color);
 
   &:hover {
     box-shadow: 0px 7px 16px 0px rgba(0, 0, 0, 0.15);
@@ -55,10 +61,8 @@ const InfoContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 2;
-
   border-top-right-radius: 5px;
   border-bottom-left-radius: 50%;
-
   transition: all 0.3s ease-in-out, border-radius 2s ease-in-out;
 
   &:hover {
