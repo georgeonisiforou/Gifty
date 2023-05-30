@@ -51,6 +51,7 @@ const NavActiveBg = styled.div`
 
 const Navbar = () => {
   const tabs = [
+    { id: "profile", label: "PROFILE", url: "/profile" },
     { id: "wishlist", label: "WISHLIST", url: "/wishlist" },
     { id: "friends", label: "FRIENDS", url: "/" },
     { id: "explore", label: "EXPLORE", url: "/" },
