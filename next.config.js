@@ -12,6 +12,8 @@ const nextConfig = {
       "asset.uniqlo.com",
       "ouraring.com",
       "media.dertouristik.com",
+      "image.api.playstation.com",
+      "external.webstorage.gr",
     ],
   },
 };

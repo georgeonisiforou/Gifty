@@ -4,7 +4,7 @@ import Card from "./Card";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const ItemsContainer = styled.div`
   display: flex;
   gap: 24px;
 
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   margin: 1rem;
   flex-wrap: wrap;
@@ -149,25 +149,39 @@ const WishlistContainer = () => {
     }
   };
 
+  const parent = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.5,
+      },
+    },
+  };
+
   return (
     <>
       <Container>
         <ItemsContainer>
-          {pageData.docs.map((item, idx) => {
-            return (
-              <Card
-                key={idx}
-                url={item.url}
-                imgUrl={item.imgUrl}
-                title={item.title}
-                seller={item.seller}
-                price={item.price}
-                id={item._id}
-                onDelete={() => refetch()}
-                // refetchData={refetch}
-              />
-            );
-          })}
+          <AnimatePresence variants={parent} initial="hidden" animate="show">
+            {pageData.docs.map((item, idx) => {
+              return (
+                <Card
+                  as={motion.div}
+                  key={idx}
+                  idx={idx}
+                  url={item.url}
+                  imgUrl={item.imgUrl}
+                  title={item.title}
+                  seller={item.seller}
+                  price={item.price}
+                  id={item._id}
+                  onDelete={() => refetch()}
+                  // refetchData={refetch}
+                />
+              );
+            })}
+          </AnimatePresence>
         </ItemsContainer>
         <PaginationContainer>
           <PagesContainer>
