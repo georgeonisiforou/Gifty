@@ -268,8 +268,14 @@ const DatesList = styled.ul`
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
+  max-height: 70%;
   gap: 1.8rem;
   color: var(--text-color);
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const DateItem = styled.li`
@@ -407,8 +413,10 @@ const ProfCard = () => {
                 exit={{ width: 0, transition: { type: "tween" }, padding: 0 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => {
-                  setDates([...dates, newDate]);
-                  setNewDate({ date: "", occasion: "" });
+                  if (newDate.date != "" && newDate.occasion != "") {
+                    setDates([...dates, newDate]);
+                    setNewDate({ date: "", occasion: "" });
+                  }
                 }}
               >
                 SAVE
@@ -501,6 +509,9 @@ const ProfCard = () => {
                         {date.date}
                         <OccasionItem>{date.occasion}</OccasionItem>
                         <DeleteDateBtn
+                          as={motion.button}
+                          whileHover={{ scale: 1.5 }}
+                          whileTap={{ y: 3 }}
                           onClick={() => {
                             dates.splice(idx, 1);
                             setDates([...dates]);
