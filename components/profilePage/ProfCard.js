@@ -134,7 +134,7 @@ const UpcomingDateContainer = styled.div`
   height: 50px;
 `;
 
-const Date = styled.div`
+const DateContainer = styled.div`
   font-size: 1.25rem;
   font-weight: 600;
 `;
@@ -235,11 +235,11 @@ const FormBtn = styled.button`
   cursor: pointer;
   font-size: 1.25rem;
   margin-top: 2rem;
-  transition: all 0.3s ease;
-
-  &:hover {
-    border: 1px solid var(--text-color);
-  }
+  /* transition: all 0.3s ease; */
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DateListContainer = styled.div`
@@ -351,8 +351,8 @@ const ProfCard = () => {
     { date: "2023-07-29", occasion: "Birthday" },
     { date: "2023-09-20", occasion: "Marriage proposal" },
     { date: "2023-10-13", occasion: "Promotion" },
-    { date: "2023-10-29", occasion: "Nameday" },
     { date: "2023-12-25", occasion: "Christmas" },
+    { date: "2023-10-29", occasion: "Nameday" },
   ];
 
   const [dates, setDates] = useState(giftDates);
@@ -360,7 +360,11 @@ const ProfCard = () => {
   const [expandLeft, setExpandLeft] = useState(false);
   const [expandRight, setExpandRight] = useState(false);
 
-  const sortedDates = dates.sort(dateSort);
+  const sortedDates = dates.sort((a, b) => a.date - b.date);
+
+  const convertDate = (d) => {
+    return new Intl.DateTimeFormat("en-GB").format(new Date(d));
+  };
 
   return (
     <>
@@ -392,8 +396,12 @@ const ProfCard = () => {
                 <FormInput
                   type="date"
                   value={newDate.date}
+                  pattern=""
                   onChange={(e) =>
-                    setNewDate({ ...newDate, date: e.target.value })
+                    setNewDate({
+                      ...newDate,
+                      date: e.target.value,
+                    })
                   }
                 />
                 <InputTitle>CELEBRATING:</InputTitle>
@@ -413,8 +421,15 @@ const ProfCard = () => {
                 exit={{ width: 0, transition: { type: "tween" }, padding: 0 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => {
+                  console.log(newDate.date);
                   if (newDate.date != "" && newDate.occasion != "") {
-                    setDates([...dates, newDate]);
+                    setDates([
+                      ...dates,
+                      {
+                        date: convertDate(newDate.date),
+                        occasion: newDate.occasion,
+                      },
+                    ]);
                     setNewDate({ date: "", occasion: "" });
                   }
                 }}
@@ -463,7 +478,9 @@ const ProfCard = () => {
           <UpcomingDateTitle>Expecting gifts on</UpcomingDateTitle>
           <UpcomingDateContainer>
             <Occasion>{sortedDates[sortedDates.length - 1].occasion}</Occasion>
-            <Date>{sortedDates[sortedDates.length - 1].date}</Date>
+            <DateContainer>
+              {sortedDates[sortedDates.length - 1].date}
+            </DateContainer>
           </UpcomingDateContainer>
         </CardContainer>
         <AnimatePresence>
@@ -506,7 +523,7 @@ const ProfCard = () => {
                         exit={{ opacity: 0, width: 0 }}
                         transition={{ delay: idx * 0.1 }}
                       >
-                        {date.date}
+                        {convertDate(date.date)}
                         <OccasionItem>{date.occasion}</OccasionItem>
                         <DeleteDateBtn
                           as={motion.button}
