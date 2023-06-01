@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { styled } from "styled-components";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, delay } from "framer-motion";
 import {
   BsFacebook,
   BsTwitter,
@@ -24,6 +24,7 @@ const CardContainer = styled.div`
   height: 740px;
   background-color: var(--comp-color);
   display: flex;
+
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
