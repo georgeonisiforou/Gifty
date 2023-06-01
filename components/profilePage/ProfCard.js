@@ -43,6 +43,7 @@ const ImageContainer = styled.div`
   background-color: var(--accent-color);
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  border: 1px solid var(--accent-color);
 `;
 
 const GradientOverlay = styled.div`
@@ -163,7 +164,7 @@ const Occasion = styled.div`
 
 const ExpandLeft = styled.button`
   position: absolute;
-  left: 5px;
+  left: 10px;
   top: 300px;
   background-color: transparent;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
@@ -182,7 +183,7 @@ const ExpandLeft = styled.button`
 
 const ExpandRight = styled.button`
   position: absolute;
-  right: 5px;
+  right: 10px;
   top: 300px;
   background-color: transparent;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
@@ -251,11 +252,11 @@ const FormBtn = styled.button`
   height: 40px;
   background-color: var(--comp-color);
   border: 1px solid var(--comp-color);
-  border-radius: 15px;
+  border-radius: 10px;
   color: var(--text-color);
   font-weight: 600;
   cursor: pointer;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin-top: 2rem;
   /* transition: all 0.3s ease; */
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
@@ -661,7 +662,21 @@ const ProfCard = () => {
                           zIndex: 10,
                         }}
                       >
-                        {item.label === "PROFILE" ? <InfoIcon /> : <GiftIcon />}
+                        {item.label === "PROFILE" ? (
+                          <InfoIcon
+                            style={{
+                              color:
+                                activeProfTab === item.id && "var(--bg-color)",
+                            }}
+                          />
+                        ) : (
+                          <GiftIcon
+                            style={{
+                              color:
+                                activeProfTab === item.id && "var(--bg-color)",
+                            }}
+                          />
+                        )}
                       </span>
                     </TabButton>
                   </Tab>
