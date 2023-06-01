@@ -156,7 +156,7 @@ const Occasion = styled.div`
 const ExpandLeft = styled.button`
   position: absolute;
   left: 5px;
-  top: 350px;
+  top: 300px;
   background-color: transparent;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
@@ -175,7 +175,7 @@ const ExpandLeft = styled.button`
 const ExpandRight = styled.button`
   position: absolute;
   right: 5px;
-  top: 350px;
+  top: 300px;
   background-color: transparent;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
