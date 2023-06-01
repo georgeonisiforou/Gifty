@@ -25,14 +25,13 @@ const ImageContainer = styled.div`
 
 const Container = styled.div`
   position: relative;
-  width: 300px;
-  height: 450px;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   justify-content: center;
   align-items: center;
   display: flex;
   border-radius: 5px;
   color: var(--text-color);
-
   background-color: var(--comp-color);
 
   &:hover ${ImageContainer} > img {
@@ -59,24 +58,24 @@ const ContentContainer = styled.div`
 `;
 
 const ProductName = styled.div`
-  font-size: 1.25rem;
+  font-size: ${({ fontSize }) => fontSize};
   font-weight: 600;
   text-align: left;
 `;
 
 const Price = styled.div`
-  font-size: 1.25rem;
+  font-size: ${({ fontSize }) => fontSize};
   font-weight: 500;
 `;
 
 const Seller = styled.div`
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: ${({ sellerSize }) => sellerSize};
 `;
 
 const DeleteBtn = styled.button`
   position: absolute;
-  display: flex;
+  display: ${({ noDelete }) => (noDelete ? "none" : "flex")};
   justify-content: center;
   align-items: center;
   border-radius: 50%;
@@ -111,6 +110,11 @@ const Card = ({
   price,
   id,
   idx,
+  width = "300px",
+  height = "450px",
+  fontSize = "1.25rem",
+  sellerSize = "0.75rem",
+  noDelete = false,
 
   onDelete = () => {},
 }) => {
@@ -135,11 +139,14 @@ const Card = ({
           boxShadow: "0px 7px 16px 0px rgba(0, 0, 0, 0.15)",
           scale: 1.02,
         }}
+        width={width}
+        height={height}
       >
         <DeleteBtn
           onClick={handleDelete}
           as={motion.button}
           whileTap={{ scale: 0.9 }}
+          noDelete={noDelete}
         >
           <DeleteIcon />
         </DeleteBtn>
@@ -154,11 +161,11 @@ const Card = ({
           </ImageContainer>
 
           <ContentContainer as={motion.div} layout>
-            <ProductName>{title}</ProductName>
+            <ProductName fontSize={fontSize}>{title}</ProductName>
 
             <PriceSeller>
-              <Price>${price}</Price>
-              <Seller>{seller}</Seller>
+              <Price fontSize={fontSize}>${price}</Price>
+              <Seller sellerSize={sellerSize}>{seller}</Seller>
             </PriceSeller>
           </ContentContainer>
         </LinkContainer>

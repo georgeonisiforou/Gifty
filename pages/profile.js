@@ -3,7 +3,7 @@ import ProfCard from "../components/profilePage/ProfCard";
 
 const Title = styled.h2`
   font-size: 1.5rem;
-  margin-left: 2rem;
+
   color: var(--text-color);
 `;
 
@@ -13,7 +13,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 2rem;
 `;
 
 export default function Profile() {

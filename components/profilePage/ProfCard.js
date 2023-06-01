@@ -2,9 +2,18 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { BsFacebook, BsTwitter, BsInstagram } from "react-icons/bs";
+import {
+  BsFacebook,
+  BsTwitter,
+  BsInstagram,
+  BsFillInfoCircleFill,
+  BsGift,
+} from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import Link from "next/link";
+import Card from "../wishlistPage/Card";
+import { useQuery } from "react-query";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -12,6 +21,7 @@ const Container = styled.div`
 
 const CardContainer = styled.div`
   width: 500px;
+  height: 720px;
   background-color: var(--comp-color);
   display: flex;
   flex-direction: column;
@@ -148,6 +158,7 @@ const ExpandLeft = styled.button`
   left: 5px;
   top: 300px;
   background-color: transparent;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   width: 15px;
   height: 60px;
@@ -166,6 +177,7 @@ const ExpandRight = styled.button`
   right: 5px;
   top: 300px;
   background-color: transparent;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   width: 15px;
   height: 60px;
@@ -180,7 +192,7 @@ const ExpandRight = styled.button`
 `;
 
 const AddDateFormContainer = styled.div`
-  height: 700px;
+  height: 720px;
   background-color: var(--accent-color);
   border-radius: 15px;
   border-top-right-radius: 0;
@@ -243,7 +255,7 @@ const FormBtn = styled.button`
 `;
 
 const DateListContainer = styled.div`
-  height: 700px;
+  height: 720px;
   background-color: var(--accent-color);
   border-radius: 15px;
   border-top-left-radius: 0;
@@ -323,19 +335,79 @@ const DeleteIcon = styled(IoClose)`
   color: var(--bg-color);
 `;
 
+const TabsContainer = styled.ul`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+`;
+
+const Tabs = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+`;
+
+const Tab = styled.li`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  font-size: 1rem;
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const InfoIcon = styled(BsFillInfoCircleFill)`
+  font-size: 1.5rem;
+  color: var(--accent-color);
+`;
+
+const GiftIcon = styled(BsGift)`
+  font-size: 1.5rem;
+  color: var(--accent-color);
+`;
+
+const TabButton = styled.button`
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+`;
+
+const NavActiveBg = styled.div`
+  background: linear-gradient(var(--comp-color), var(--accent-color));
+  position: absolute;
+  right: 0;
+  top: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const WishlistContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+`;
+
 const ProfCard = () => {
-  const dateSort = (a, b) => {
-    const dateA = a.date;
-    const dateB = b.date;
-
-    if (dateA < dateB) {
-      return 1;
-    } else if (dateA > dateB) {
-      return -1;
-    }
-    return 0;
-  };
-
   const list = {
     hidden: { opacity: 0, width: 0 },
     show: {
@@ -347,6 +419,18 @@ const ProfCard = () => {
     },
   };
 
+  const getPageData = async () =>
+    axios
+      .get(`http://localhost:3001/wishlist/favorites`)
+      .then((res) => res.data);
+
+  const {
+    data: pageData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery(["pageData"], () => getPageData());
+
   const giftDates = [
     { date: "2023-07-29", occasion: "Birthday" },
     { date: "2023-09-20", occasion: "Marriage proposal" },
@@ -355,12 +439,22 @@ const ProfCard = () => {
     { date: "2023-10-29", occasion: "Nameday" },
   ];
 
+  const tabs = [
+    { id: "profile", label: "PROFILE" },
+    { id: "wishlist", label: "WISHLIST" },
+  ];
+
+  const [activeProfTab, setActiveProfTab] = useState(tabs[0].id);
+
   const [dates, setDates] = useState(giftDates);
-  const [newDate, setNewDate] = useState({ date: "", occasion: "" });
+  const [newDate, setNewDate] = useState({
+    date: "",
+    occasion: "",
+  });
   const [expandLeft, setExpandLeft] = useState(false);
   const [expandRight, setExpandRight] = useState(false);
 
-  const sortedDates = dates.sort((a, b) => a.date - b.date);
+  const sortedDates = dates.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const convertDate = (d) => {
     return new Intl.DateTimeFormat("en-GB").format(new Date(d));
@@ -396,7 +490,6 @@ const ProfCard = () => {
                 <FormInput
                   type="date"
                   value={newDate.date}
-                  pattern=""
                   onChange={(e) =>
                     setNewDate({
                       ...newDate,
@@ -421,12 +514,11 @@ const ProfCard = () => {
                 exit={{ width: 0, transition: { type: "tween" }, padding: 0 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => {
-                  console.log(newDate.date);
                   if (newDate.date != "" && newDate.occasion != "") {
                     setDates([
                       ...dates,
                       {
-                        date: convertDate(newDate.date),
+                        date: newDate.date,
                         occasion: newDate.occasion,
                       },
                     ]);
@@ -456,32 +548,93 @@ const ProfCard = () => {
             <Name>Inspector Clouseau</Name>
             <Sub>Good boi</Sub>
           </NameAndSub>
-          <SocialContainer>
-            <SocialIcon href="/">
-              <Fb />
-            </SocialIcon>
-            <SocialIcon href="/">
-              <Twitter />
-            </SocialIcon>
-            <SocialIcon href="/">
-              <Instagram />
-            </SocialIcon>
-          </SocialContainer>
-          <AboutTitle>About</AboutTitle>
-          <AboutSection>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-            suscipit mauris feugiat, euismod lectus eget, convallis nisl.
-            Vestibulum vitae est sit amet lectus luctus mattis. Nullam mattis
-            arcu lorem, vel condimentum ex aliquet in. Praesent ac gravida
-            dolor, tempor iaculis leo.
-          </AboutSection>
-          <UpcomingDateTitle>Expecting gifts on</UpcomingDateTitle>
-          <UpcomingDateContainer>
-            <Occasion>{sortedDates[sortedDates.length - 1].occasion}</Occasion>
-            <DateContainer>
-              {sortedDates[sortedDates.length - 1].date}
-            </DateContainer>
-          </UpcomingDateContainer>
+
+          {activeProfTab === "profile" ? (
+            <>
+              <SocialContainer>
+                <SocialIcon href="/">
+                  <Fb />
+                </SocialIcon>
+                <SocialIcon href="/">
+                  <Twitter />
+                </SocialIcon>
+                <SocialIcon href="/">
+                  <Instagram />
+                </SocialIcon>
+              </SocialContainer>
+              <AboutTitle>About</AboutTitle>
+              <AboutSection>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+                suscipit mauris feugiat, euismod lectus eget, convallis nisl.
+                Vestibulum vitae est sit amet lectus luctus mattis. Nullam
+                mattis arcu lorem, vel condimentum ex aliquet in. Praesent ac
+                gravida dolor, tempor iaculis leo.
+              </AboutSection>
+              <UpcomingDateTitle>Expecting gifts on</UpcomingDateTitle>
+              <UpcomingDateContainer>
+                <Occasion>{sortedDates[0].occasion}</Occasion>
+                <DateContainer>
+                  {convertDate(sortedDates[0].date)}
+                </DateContainer>
+              </UpcomingDateContainer>
+            </>
+          ) : (
+            <WishlistContainer>
+              {pageData.docs.map((item, idx) => {
+                return (
+                  <Card
+                    as={motion.div}
+                    key={idx}
+                    idx={idx}
+                    url={item.url}
+                    imgUrl={item.imgUrl}
+                    title={item.title}
+                    seller={item.seller}
+                    price={item.price}
+                    id={item._id}
+                    width="150px"
+                    height="250px"
+                    fontSize="0.5rem"
+                    sellerSize="0.5rem"
+                    noDelete={true}
+                  />
+                );
+              })}
+            </WishlistContainer>
+          )}
+
+          <TabsContainer>
+            <Tabs>
+              {tabs.map((item, idx) => {
+                return (
+                  <Tab
+                    key={item.id}
+                    onClick={() => {
+                      setActiveProfTab(item.id);
+                    }}
+                  >
+                    {activeProfTab === item.id && (
+                      <NavActiveBg
+                        as={motion.div}
+                        layoutId="active-prof-pill"
+                        transition={{ duration: 0.6, type: "spring" }}
+                      />
+                    )}
+                    <TabButton>
+                      <span
+                        style={{
+                          position: "relative",
+                          zIndex: 10,
+                        }}
+                      >
+                        {item.label === "PROFILE" ? <InfoIcon /> : <GiftIcon />}
+                      </span>
+                    </TabButton>
+                  </Tab>
+                );
+              })}
+            </Tabs>
+          </TabsContainer>
         </CardContainer>
         <AnimatePresence>
           {expandRight && (
