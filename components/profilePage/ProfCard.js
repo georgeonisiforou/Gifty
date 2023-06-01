@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const CardContainer = styled.div`
   width: 500px;
-  height: 720px;
+  height: 740px;
   background-color: var(--comp-color);
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@ const GradientOverlay = styled.div`
 `;
 
 const Name = styled.h3`
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1.5rem;
   text-transform: uppercase;
 `;
@@ -147,6 +147,14 @@ const UpcomingDateContainer = styled.div`
 const DateContainer = styled.div`
   font-size: 1.25rem;
   font-weight: 600;
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.2);
 `;
 
 const Occasion = styled.div`
@@ -192,7 +200,7 @@ const ExpandRight = styled.button`
 `;
 
 const AddDateFormContainer = styled.div`
-  height: 720px;
+  height: 740px;
   background-color: var(--accent-color);
   border-radius: 15px;
   border-top-right-radius: 0;
@@ -205,6 +213,7 @@ const AddDateFormContainer = styled.div`
   flex-direction: column;
   gap: 2rem;
   overflow: hidden;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const FormTitle = styled.h3`
@@ -234,6 +243,7 @@ const FormInput = styled.input`
   padding: 0.5rem;
   border: none;
   outline: none;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
 `;
 
 const FormBtn = styled.button`
@@ -255,7 +265,7 @@ const FormBtn = styled.button`
 `;
 
 const DateListContainer = styled.div`
-  height: 720px;
+  height: 740px;
   background-color: var(--accent-color);
   border-radius: 15px;
   border-top-left-radius: 0;
@@ -268,6 +278,8 @@ const DateListContainer = styled.div`
   flex-direction: column;
   gap: 2rem;
   overflow: hidden;
+
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const DatesTitle = styled.h3`
@@ -284,6 +296,7 @@ const DatesList = styled.ul`
   gap: 1.8rem;
   color: var(--text-color);
   overflow-y: scroll;
+  padding: 10px 0;
 
   &::-webkit-scrollbar {
     display: none;
@@ -317,6 +330,7 @@ const OccasionItem = styled.div`
   padding: 5px;
   font-size: 0.65rem;
   font-weight: 600;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
 `;
 
 const DeleteDateBtn = styled.button`
@@ -551,7 +565,12 @@ const ProfCard = () => {
 
           {activeProfTab === "profile" ? (
             <>
-              <SocialContainer>
+              <SocialContainer
+                as={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+              >
                 <SocialIcon href="/">
                   <Fb />
                 </SocialIcon>
@@ -563,7 +582,12 @@ const ProfCard = () => {
                 </SocialIcon>
               </SocialContainer>
               <AboutTitle>About</AboutTitle>
-              <AboutSection>
+              <AboutSection
+                as={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+              >
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
                 suscipit mauris feugiat, euismod lectus eget, convallis nisl.
                 Vestibulum vitae est sit amet lectus luctus mattis. Nullam
@@ -571,7 +595,12 @@ const ProfCard = () => {
                 gravida dolor, tempor iaculis leo.
               </AboutSection>
               <UpcomingDateTitle>Expecting gifts on</UpcomingDateTitle>
-              <UpcomingDateContainer>
+              <UpcomingDateContainer
+                as={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+              >
                 <Occasion>{sortedDates[0].occasion}</Occasion>
                 <DateContainer>
                   {convertDate(sortedDates[0].date)}
@@ -579,7 +608,12 @@ const ProfCard = () => {
               </UpcomingDateContainer>
             </>
           ) : (
-            <WishlistContainer>
+            <WishlistContainer
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+            >
               {pageData.docs.map((item, idx) => {
                 return (
                   <Card
