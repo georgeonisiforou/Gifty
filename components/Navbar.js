@@ -53,7 +53,7 @@ const Navbar = () => {
   const tabs = [
     { id: "profile", label: "PROFILE", url: "/profile" },
     { id: "wishlist", label: "WISHLIST", url: "/wishlist" },
-    { id: "friends", label: "FRIENDS", url: "/" },
+    { id: "friends", label: "FRIENDS", url: "/friends" },
     { id: "explore", label: "EXPLORE", url: "/" },
   ];
 
