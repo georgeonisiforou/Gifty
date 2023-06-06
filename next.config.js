@@ -14,6 +14,7 @@ const nextConfig = {
       "media.dertouristik.com",
       "image.api.playstation.com",
       "external.webstorage.gr",
+      "encrypted-tbn0.gstatic.com",
     ],
   },
 };
