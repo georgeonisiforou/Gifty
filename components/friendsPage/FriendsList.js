@@ -7,7 +7,8 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 15px;
+  padding: 1rem 2rem;
 `;
 
 const FriendsList = () => {

@@ -59,7 +59,7 @@ const MainInputContainer = styled.input`
   }
 `;
 
-const SaveBtn = styled.button`
+export const SaveBtn = styled.button`
   width: 200px;
   height: 45px;
   border: none;

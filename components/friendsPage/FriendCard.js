@@ -8,6 +8,15 @@ const Container = styled(Link)`
   display: flex;
   align-items: center;
   color: var(--text-color);
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -15,10 +24,14 @@ const ImageContainer = styled.div`
   border-radius: 50%;
   width: 80px;
   height: 80px;
+  overflow: hidden;
+  border: 1px solid var(--accent-color);
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
 `;
 
 const Name = styled.div`
   font-size: 1rem;
+  font-weight: 600;
 `;
 
 const FriendCard = ({ avatar, name }) => {
